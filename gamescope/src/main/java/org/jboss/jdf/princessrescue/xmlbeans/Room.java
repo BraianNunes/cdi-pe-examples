@@ -1,0 +1,75 @@
+package org.jboss.jdf.princessrescue.xmlbeans;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import org.jboss.jdf.princessrescue.Player;
+import org.jboss.jdf.princessrescue.scope.GameScoped;
+
+@GameScoped
+public class Room implements Serializable {
+	
+	private Room north;
+	
+	private Room south;
+	
+	private Room east;
+	
+	private Room west;
+	
+	private String description;
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	private List<Player> players = new ArrayList<Player> ();
+	
+	public synchronized boolean shootAt() {
+		
+		if (!players.isEmpty()) {
+			for (Player player : players) {
+				player.setShot(true);
+			}
+			// all the players are removed by an arrow hit
+			players = new ArrayList<Player> ();
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public synchronized void addPlayer(Player player) {
+		players.add(player);
+	}
+	
+	public synchronized void removePlayer(Player player) {
+		players.remove(player);
+	}
+	
+	public synchronized List<Player> getPlayers() {
+		return new ArrayList<Player> (players);
+	}
+	
+	public Room getNorth() {
+		return north;
+	}
+	
+	public Room getSouth() {
+		return south;
+	}
+	
+	public Room getEast() {
+		return east;
+	}
+	
+	public Room getWest() {
+		return west;
+	}	
+}

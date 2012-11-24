@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   template="/WEB-INF/templates/default.xhtml">
+   <ui:define name="content">
+      <h1>Welcome to JBoss!</h1>
+
+	  <h:panelGroup rendered="#{not currentPlayer.shot}">
+	  
+      <h:form>
+      
+      	<div>
+	      	<h:outputText value="#{gameControl.description}" />
+		</div>
+	
+		<div>	      	
+      		<h:messages />
+      	</div>
+
+		<div>
+			Move       	
+      		<h:commandButton value="north" action="#{gameControl.north()}" disabled="#{empty gameControl.currentRoom.north}"/>
+      		<h:commandButton value="east" action="#{gameControl.east()}" disabled="#{empty gameControl.currentRoom.east}"/>
+      		<h:commandButton value="south" action="#{gameControl.south()}" disabled="#{empty gameControl.currentRoom.south}"/>
+      		<h:commandButton value="west" action="#{gameControl.west()}" disabled="#{empty gameControl.currentRoom.west}"/>
+      	</div>
+      	
+      	<div>
+      		Shoot
+      		<h:commandButton value="north" action="#{gameControl.shootNorth()}" disabled="#{empty gameControl.currentRoom.north}" />
+      		<h:commandButton value="east" action="#{gameControl.shootEast()}" disabled="#{empty gameControl.currentRoom.east}"/>
+      		<h:commandButton value="south" action="#{gameControl.shootSouth()}" disabled="#{empty gameControl.currentRoom.south}"/>
+      		<h:commandButton value="west" action="#{gameControl.shootWest()}" disabled="#{empty gameControl.currentRoom.west}"/>
+      	</div>
+	  </h:form>
+	  
+	  <h:form>
+	  	<ui:repeat var="p" value="#{currentRoom.players}">
+	  		<h:outputText value="#{p.name}" />
+	  	</ui:repeat>
+	  </h:form>
+	  
+	  <h:form>
+		  <h:commandButton value="Leave game" action="#{gameControl.leaveGame()}"/>
+	  </h:form>
+	  
+	  </h:panelGroup>
+	  
+	  <h:panelGroup rendered="#{currentPlayer.shot}">
+	  	You have been shot while you were idly standing!
+	  	
+	  	<h:form>
+		  	<h:commandButton value="Rest in Peace" action="#{gameControl.leaveGame()}"/>
+	  	</h:form>
+	  </h:panelGroup>
+   
+   </ui:define>
+</ui:composition>
