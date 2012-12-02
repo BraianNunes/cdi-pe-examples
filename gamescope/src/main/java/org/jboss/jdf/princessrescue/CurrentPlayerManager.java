@@ -56,9 +56,13 @@ public class CurrentPlayerManager implements Serializable {
 		return player;
 	}
 	
+	@Inject
+	GameMessage gameMessage;
+	
 	public void joinGame(int gameId) {
 		currentGameId = gameId;
 		player.setShot(false);
+		moveTo(initialRoom.get());
 		playerJoinedGameEvent.fire(new PlayerJoinedGameEvent());
 	}
 	
@@ -77,11 +81,45 @@ public class CurrentPlayerManager implements Serializable {
 			
 			currentRoom = room;
 			room.addPlayer(player);
+			
+			gameMessage.add(room.getDescription());
+			
+			boolean smellsPlayer = false;
+						
+			if (currentRoom.getNorth() != null) {
+				if (currentRoom.getNorth().getPlayers().size() > 0) {
+					smellsPlayer = true;
+				}
+			}
+			if (currentRoom.getSouth() != null) {
+				if (currentRoom.getSouth().getPlayers().size() > 0) {
+					smellsPlayer = true;
+				}
+			}
+			if (currentRoom.getEast() != null) {
+				if (currentRoom.getEast().getPlayers().size() > 0) {
+					smellsPlayer = true;
+				}
+			}
+			if (currentRoom.getWest() != null) {
+				if (currentRoom.getWest().getPlayers().size() > 0) {
+					smellsPlayer = true;
+				}
+			}
+			
+			if (smellsPlayer) {
+				gameMessage.add("You smell another player nearby!");
+			}
 		}
 	}
 	
-	public boolean shootAt(Room room) {
-		return room.shootAt();
+	public void shootAt(Room room) {
+		if (room.shootAt()) {
+			gameMessage.add("Your arrow hit a target!");
+		}
+		else {
+			gameMessage.add("Nothing happens...");
+		}
 	}
 
 	
@@ -89,10 +127,6 @@ public class CurrentPlayerManager implements Serializable {
 	@Current
 	@Named
 	public Room getCurrentRoom() {
-		if (currentRoom == null) {
-			moveTo(initialRoom.get());
-		}
-		
 		return currentRoom;
 	}
 	

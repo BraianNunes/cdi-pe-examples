@@ -15,25 +15,25 @@ public class LobbyAction {
 	
 	public String login() {
 		currentPlayerManager.login();
-		return "lobby";
+		return "lobby?faces-redirect=true";
 	}
 	
 	public String createNewGame() {
 		int gameId = gamesManager.createNewGame().getId();
 		currentPlayerManager.joinGame(gameId);
 		
-		return "room";
+		return "room?faces-redirect=true";
 	}
 	
 	public String joinGame(Integer gid) {
 		currentPlayerManager.joinGame(gid);
 
-		return "room";
+		return "room?faces-redirect=true";
 	}
 	
 	public String leaveGame() {
 		currentPlayerManager.leaveGame();
 		
-		return "lobby";
+		return "lobby?faces-redirect=true";
 	}
 }

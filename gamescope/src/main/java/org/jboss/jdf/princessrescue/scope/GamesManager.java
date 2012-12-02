@@ -59,7 +59,9 @@ public class GamesManager {
 		
 		Game game = games.get(gameId);
 		if (game != null) {
-			game.getPlayers().add(player);
+			if (!game.getPlayers().contains(player)) {
+				game.getPlayers().add(player);
+			}
 		}
 	}
 		

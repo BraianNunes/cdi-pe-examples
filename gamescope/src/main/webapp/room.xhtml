@@ -5,14 +5,13 @@
    xmlns:h="http://java.sun.com/jsf/html"
    template="/WEB-INF/templates/default.xhtml">
    <ui:define name="content">
-      <h1>Welcome to JBoss!</h1>
 
 	  <h:panelGroup rendered="#{not currentPlayer.shot}">
 	  
       <h:form>
       
       	<div>
-	      	<h:outputText value="#{roomAction.description}" />
+	      	<h:outputText value="#{gameMessage.message}" />
 		</div>
 	
 		<div>	      	
