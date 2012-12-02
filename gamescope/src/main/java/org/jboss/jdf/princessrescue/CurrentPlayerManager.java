@@ -25,7 +25,7 @@ public class CurrentPlayerManager implements Serializable {
 	private int currentGameId = 0;
 	
 	@Inject
-	private Player player;
+	private Player currentPlayer;
 	
 	@Inject
 	@Random
@@ -58,7 +58,7 @@ public class CurrentPlayerManager implements Serializable {
 	@Current
 	@Named
 	public Player getCurrentPlayer() {
-		return player;
+		return currentPlayer;
 	}
 	
 	@Inject
@@ -66,7 +66,7 @@ public class CurrentPlayerManager implements Serializable {
 	
 	public void joinGame(int gameId) {
 		currentGameId = gameId;
-		player.setShot(false);
+		currentPlayer.setShot(false);
 		moveTo(initialRoom.get());
 		playerJoinedGameEvent.fire(new PlayerJoinedGameEvent());
 	}
@@ -78,43 +78,53 @@ public class CurrentPlayerManager implements Serializable {
 		currentRoom = null;
 	}
 	
+	private void describeCurrentRoom() {
+		gameMessage.add(currentRoom.getDescription());
+		
+		boolean smellsPlayer = false;
+					
+		if (currentRoom.getNorth() != null) {
+			if (currentRoom.getNorth().getPlayers().size() > 0) {
+				smellsPlayer = true;
+			}
+		}
+		if (currentRoom.getSouth() != null) {
+			if (currentRoom.getSouth().getPlayers().size() > 0) {
+				smellsPlayer = true;
+			}
+		}
+		if (currentRoom.getEast() != null) {
+			if (currentRoom.getEast().getPlayers().size() > 0) {
+				smellsPlayer = true;
+			}
+		}
+		if (currentRoom.getWest() != null) {
+			if (currentRoom.getWest().getPlayers().size() > 0) {
+				smellsPlayer = true;
+			}
+		}
+		
+		if (smellsPlayer) {
+			gameMessage.add("You smell another player nearby.");
+		}
+		
+		for (Player player : currentRoom.getPlayers()) {
+			if (player != currentPlayer) {
+				gameMessage.add(player.getName() + " is in the room.");
+			}
+		}
+	}
+	
 	public void moveTo(Room room) {
 		if (room != null) {
 			if (currentRoom != null) {
-				currentRoom.removePlayer(player);
+				currentRoom.removePlayer(currentPlayer);
 			}
 			
 			currentRoom = room;
-			room.addPlayer(player);
+			room.addPlayer(currentPlayer);
 			
-			gameMessage.add(room.getDescription());
-			
-			boolean smellsPlayer = false;
-						
-			if (currentRoom.getNorth() != null) {
-				if (currentRoom.getNorth().getPlayers().size() > 0) {
-					smellsPlayer = true;
-				}
-			}
-			if (currentRoom.getSouth() != null) {
-				if (currentRoom.getSouth().getPlayers().size() > 0) {
-					smellsPlayer = true;
-				}
-			}
-			if (currentRoom.getEast() != null) {
-				if (currentRoom.getEast().getPlayers().size() > 0) {
-					smellsPlayer = true;
-				}
-			}
-			if (currentRoom.getWest() != null) {
-				if (currentRoom.getWest().getPlayers().size() > 0) {
-					smellsPlayer = true;
-				}
-			}
-			
-			if (smellsPlayer) {
-				gameMessage.add("You smell another player nearby!");
-			}
+			describeCurrentRoom();
 		}
 	}
 	
@@ -137,13 +147,13 @@ public class CurrentPlayerManager implements Serializable {
 	
 	public void login() {
 		playerLoginEvent.fire(new PlayerLoginEvent());
-		player.setLoggedIn(true);
+		currentPlayer.setLoggedIn(true);
 	}
 	
 	@PreDestroy
 	public void preDestroy() {
 		playerLeftGameEvent.fire(new PlayerLeftGameEvent());
 		playerLogoffEvent.fire(new PlayerLogoffEvent());
-		System.out.println("XXX predestroy on " + player.getName());
+		System.out.println("XXX predestroy on " + currentPlayer.getName());
 	}
 }
