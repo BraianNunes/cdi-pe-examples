@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,7 +19,6 @@ import org.jboss.jdf.princessrescue.PlayerLeftGameEvent;
 
 
 @ApplicationScoped
-@Named
 public class GamesManager {
 	
 	@Inject
@@ -32,6 +32,8 @@ public class GamesManager {
 		return (GameContext)beanManager.getContext(GameScoped.class);
 	}
 	
+	@Produces
+	@Named
 	public List<Game> getGames() {
 		return new ArrayList<Game> (games.values());
 	}

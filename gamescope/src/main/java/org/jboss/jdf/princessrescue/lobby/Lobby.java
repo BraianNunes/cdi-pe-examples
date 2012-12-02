@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 
 import org.jboss.jdf.princessrescue.Current;
@@ -13,7 +14,6 @@ import org.jboss.jdf.princessrescue.Player;
 import org.jboss.jdf.princessrescue.PlayerLoginEvent;
 import org.jboss.jdf.princessrescue.PlayerLogoffEvent;
 
-@Named
 @ApplicationScoped
 public class Lobby {
 	private List<Player> players = new LinkedList<Player> ();
@@ -38,6 +38,8 @@ public class Lobby {
 		}
 	}
 	
+	@Produces
+	@Named
 	public List<Player> getPlayers() {
 		return players;
 	}

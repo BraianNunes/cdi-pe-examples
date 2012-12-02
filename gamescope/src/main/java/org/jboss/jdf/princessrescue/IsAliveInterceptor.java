@@ -2,6 +2,7 @@ package org.jboss.jdf.princessrescue;
 
 import java.io.Serializable;
 
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -12,12 +13,13 @@ import javax.interceptor.InvocationContext;
 public class IsAliveInterceptor implements Serializable {
 	
 	@Inject
-	GameControl gameControl;
+	@Current
+	Instance<Player> currentPlayer;
 
 	@AroundInvoke
 	public Object manage(InvocationContext ic) throws Exception {
 		
-		if (!gameControl.getPlayer().isShot()) {
+		if (!currentPlayer.get().isShot()) {
 			// I'am doing science and I'am still alive!	
 			return ic.proceed();
 		}

@@ -9,7 +9,7 @@
       
       <h:panelGroup rendered="#{not currentPlayer.loggedIn}">
    	   <h:form>
-      	<h:inputText value="#{gameControl.player.name}" /> <h:commandButton value="Login" action="#{gameControl.login()}" />
+      	<h:inputText value="#{currentPlayer.name}" /> <h:commandButton value="Login" action="#{lobbyAction.login()}" />
        </h:form>
   
       </h:panelGroup>
@@ -19,22 +19,22 @@
       <h:form>
       
       	<ul>
-      		<ui:repeat var="p" value="#{lobby.players}">
+      		<ui:repeat var="p" value="#{players}">
 		      	<li>#{p.name}</li>
       		</ui:repeat>
   	  		</ul>
   	  
 	  	  <ul>
-	  	  	<ui:repeat var="g" value="#{gamesManager.games}">
+	  	  	<ui:repeat var="g" value="#{games}">
 	  	  		<li><ui:repeat var="p" value="#{g.players}">
 	  	  				#{p.name}, 
 	  	  			</ui:repeat>
-	  	  			<h:commandButton value="Join" action="#{gameControl.joinGame(g.id)}"/>
+	  	  			<h:commandButton value="Join" action="#{lobbyAction.joinGame(g.id)}"/>
 	  	  		</li>
   	  		</ui:repeat>
   	  	  </ul>
   	  
-  	  <h:commandButton value="Start a new Game" action="#{gameControl.createNewGame()}"/>
+  	  <h:commandButton value="Start a new Game" action="#{lobbyAction.createNewGame()}"/>
   	  
   	  </h:form>
 
