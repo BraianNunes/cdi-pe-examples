@@ -2,11 +2,7 @@ package org.jboss.jdf.princessrescue.xmlbeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import javax.inject.Inject;
 
 import org.jboss.jdf.princessrescue.Player;
 import org.jboss.jdf.princessrescue.scope.GameScoped;
@@ -14,6 +10,11 @@ import org.jboss.jdf.princessrescue.scope.GameScoped;
 @GameScoped
 public class Room implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Room north;
 	
 	private Room south;

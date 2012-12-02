@@ -1,2 +1,2 @@
 org.jboss.jdf.princessrescue.scope.GameScopeExtension
-org.jboss.jdf.princessrescue.xmlbeans.XmlBeansExtension
+org.jboss.jdf.princessrescue.xmlbeans.XmlRoomBeansExtension

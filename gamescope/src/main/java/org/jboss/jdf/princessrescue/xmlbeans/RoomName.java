@@ -5,7 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Inject;
 import javax.inject.Qualifier;
 
 import static java.lang.annotation.ElementType.FIELD;

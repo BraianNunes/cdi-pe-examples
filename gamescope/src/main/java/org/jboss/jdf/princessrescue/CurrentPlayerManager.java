@@ -17,6 +17,11 @@ import org.jboss.jdf.princessrescue.xmlbeans.Room;
 @SessionScoped
 public class CurrentPlayerManager implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private int currentGameId = 0;
 	
 	@Inject

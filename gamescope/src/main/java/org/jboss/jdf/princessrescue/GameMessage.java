@@ -8,6 +8,11 @@ import javax.inject.Named;
 @Named
 @SessionScoped
 public class GameMessage implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	StringBuilder builder = new StringBuilder();
 
 	public void add(String message) {

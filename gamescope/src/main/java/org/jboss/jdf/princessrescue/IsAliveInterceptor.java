@@ -12,6 +12,11 @@ import javax.interceptor.InvocationContext;
 @Interceptor
 public class IsAliveInterceptor implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@Inject
 	@Current
 	Instance<Player> currentPlayer;

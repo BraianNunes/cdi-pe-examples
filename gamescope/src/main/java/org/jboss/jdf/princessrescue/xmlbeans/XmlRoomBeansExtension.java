@@ -20,12 +20,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class XmlBeansExtension implements Extension {
+public class XmlRoomBeansExtension implements Extension {
 	
 	public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager beanManager) throws SecurityException, NoSuchFieldException {
 		
 		try {
-            InputStream creatureDefs = XmlBeansExtension.class.getClassLoader().getResourceAsStream("rooms.xml");
+            InputStream creatureDefs = XmlRoomBeansExtension.class.getClassLoader().getResourceAsStream("rooms.xml");
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(creatureDefs);
@@ -54,9 +54,6 @@ public class XmlBeansExtension implements Extension {
         } catch (IOException e) {
             throw new RuntimeException("Error reading or parsing xml file", e);
         }
-		
-		//addRoom(event, beanManager, "entry", "You see an entry to the dungeon.", "pit", null, null, null);
-		//addRoom(event, beanManager, "pit", "You see a pit here.", null, null, "entry", null);
 	}
 	
 	private void addRoom(BeforeBeanDiscovery event, BeanManager beanManager, String roomName, String description, String northRoom, String eastRoom, String southRoom, String westRoom) throws SecurityException, NoSuchFieldException {

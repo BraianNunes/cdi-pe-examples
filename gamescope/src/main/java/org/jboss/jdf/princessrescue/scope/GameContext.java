@@ -86,9 +86,6 @@ public class GameContext extends AbstractContext {
 		}
 		
 		throw new IllegalStateException("Accessing non-existing game context!");
-		/*if (createIfNotExist) {
-			return createGameStorage(gid);
-		}*/
 	}
 
 	@Override
