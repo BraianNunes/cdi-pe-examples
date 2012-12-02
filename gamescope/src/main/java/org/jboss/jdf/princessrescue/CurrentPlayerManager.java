@@ -44,6 +44,9 @@ public class CurrentPlayerManager implements Serializable {
 	Event<PlayerLeftGameEvent> playerLeftGameEvent;
 	
 	@Inject
+	Event<PlayerEnteredRoomEvent> playerEnteredRoomEvent;
+	
+	@Inject
 	GamesManager gamesManager;
 	
 	private Room currentRoom;
@@ -78,43 +81,6 @@ public class CurrentPlayerManager implements Serializable {
 		currentRoom = null;
 	}
 	
-	private void describeCurrentRoom() {
-		gameMessage.add(currentRoom.getDescription());
-		
-		boolean smellsPlayer = false;
-					
-		if (currentRoom.getNorth() != null) {
-			if (currentRoom.getNorth().getPlayers().size() > 0) {
-				smellsPlayer = true;
-			}
-		}
-		if (currentRoom.getSouth() != null) {
-			if (currentRoom.getSouth().getPlayers().size() > 0) {
-				smellsPlayer = true;
-			}
-		}
-		if (currentRoom.getEast() != null) {
-			if (currentRoom.getEast().getPlayers().size() > 0) {
-				smellsPlayer = true;
-			}
-		}
-		if (currentRoom.getWest() != null) {
-			if (currentRoom.getWest().getPlayers().size() > 0) {
-				smellsPlayer = true;
-			}
-		}
-		
-		if (smellsPlayer) {
-			gameMessage.add("You smell another player nearby.");
-		}
-		
-		for (Player player : currentRoom.getPlayers()) {
-			if (player != currentPlayer) {
-				gameMessage.add(player.getName() + " is in the room.");
-			}
-		}
-	}
-	
 	public void moveTo(Room room) {
 		if (room != null) {
 			if (currentRoom != null) {
@@ -123,8 +89,8 @@ public class CurrentPlayerManager implements Serializable {
 			
 			currentRoom = room;
 			room.addPlayer(currentPlayer);
-			
-			describeCurrentRoom();
+	
+			playerEnteredRoomEvent.fire(new PlayerEnteredRoomEvent());
 		}
 	}
 	
@@ -137,7 +103,6 @@ public class CurrentPlayerManager implements Serializable {
 		}
 	}
 
-	
 	@Produces
 	@Current
 	@Named
