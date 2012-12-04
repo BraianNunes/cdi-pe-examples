@@ -16,8 +16,9 @@ public class MyExtension implements Extension {
 	void beforeBeanDiscovery(@Observes BeforeBeanDiscovery bbd) {
 	    System.out.println("XXX beginning the scanning process");
 	}
+	
 	<T> void processAnnotatedType(@Observes ProcessAnnotatedType<T> pat) {
-		System.out.println("XXX scanning type: " + pat.getAnnotatedType().getJavaClass().getName());
+		System.out.println("XXX process annotated type: " + pat.getAnnotatedType().getJavaClass().getName());
 	}
 	
 	<T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> pit) {
@@ -32,7 +33,7 @@ public class MyExtension implements Extension {
 	}
 	
 	<T> void processBean(@Observes ProcessBean<T> pb) {
-		System.out.println("XXX processing bean " + pb.getAnnotated().getBaseType().toString());
+		System.out.println("XXX processing bean " + pb.getBean().toString());
 	}
 	
 	<T, X> void processObserverMethod(@Observes ProcessObserverMethod<T, X> pom) {
