@@ -18,9 +18,9 @@ import javax.inject.Named;
 
 public class NamedPackageExtension implements Extension {
 	<X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> pat) {
-		
-        final AnnotatedType<X> at = pat.getAnnotatedType();
-        AnnotatedType<X> wrapped = new AnnotatedType<X>() {
+
+		final AnnotatedType<X> at = pat.getAnnotatedType();
+		AnnotatedType<X> wrapped = new AnnotatedType<X>() {
 
 			@Override
 			public Type getBaseType() {
@@ -35,81 +35,79 @@ public class NamedPackageExtension implements Extension {
 			@Override
 			public <T extends Annotation> T getAnnotation(
 					Class<T> annotationType) {
-								
-				if ( Named.class.equals(annotationType) ) {
-                    class NamedLiteral 
-                            extends AnnotationLiteral<Named> 
-                            implements Named {
-                        @Override
-                        public String value() {
-                            Package pkg = at.getJavaClass().getPackage();
-                            
-                            String unqualifiedName = "";
-                            if (at.isAnnotationPresent(Named.class)) {
-                            	unqualifiedName = at.getAnnotation(Named.class).value();
-                            }
 
-                            // If Named is not present, or it ha a default value 
-                            if (unqualifiedName.isEmpty()) {
-                            	unqualifiedName = Introspector.decapitalize(at.getJavaClass().getSimpleName());
-                            }
-                            
-                            final String qualifiedName;
-                            if ( pkg.isAnnotationPresent(Named.class) ) {
-                                qualifiedName = pkg.getAnnotation(Named.class).value() 
-                                      + '.' + unqualifiedName;
-                            }
-                            else {
-                                qualifiedName = unqualifiedName;
-                            }
-                                                                                    
-                            return qualifiedName;
-                        }
-                    }
-                    return (T) new NamedLiteral();
-                }
-                else {
-                    return at.getAnnotation(annotationType);
-                }
+				if (Named.class.equals(annotationType)) {
+					class NamedLiteral extends AnnotationLiteral<Named>
+							implements Named {
+						@Override
+						public String value() {
+							Package pkg = at.getJavaClass().getPackage();
+
+							String unqualifiedName = "";
+							if (at.isAnnotationPresent(Named.class)) {
+								unqualifiedName = at.getAnnotation(Named.class)
+										.value();
+							}
+
+							// If Named is not present, or it ha a default value
+							if (unqualifiedName.isEmpty()) {
+								unqualifiedName = Introspector.decapitalize(at
+										.getJavaClass().getSimpleName());
+							}
+
+							final String qualifiedName;
+							if (pkg.isAnnotationPresent(Named.class)) {
+								qualifiedName = pkg.getAnnotation(Named.class)
+										.value() + '.' + unqualifiedName;
+							} else {
+								qualifiedName = unqualifiedName;
+							}
+
+							return qualifiedName;
+						}
+					}
+					return (T) new NamedLiteral();
+				} else {
+					return at.getAnnotation(annotationType);
+				}
 			}
 
 			@Override
 			public Set<Annotation> getAnnotations() {
-				
+
 				Set<Annotation> original = at.getAnnotations();
 				Set<Annotation> ret = new HashSet<Annotation>();
-				
+
 				boolean hasNamed = false;
-				
+
 				for (Annotation annotation : original) {
 					if (annotation.annotationType().equals(Named.class)) {
 						ret.add(getAnnotation(Named.class));
 						hasNamed = true;
-					}
-					else {
+					} else {
 						ret.add(annotation);
 					}
 				}
-				
+
 				if (!hasNamed) {
 					Package pkg = at.getJavaClass().getPackage();
 					if (pkg.isAnnotationPresent(Named.class)) {
 						ret.add(getAnnotation(Named.class));
 					}
 				}
-				
+
 				return ret;
 			}
 
 			@Override
 			public boolean isAnnotationPresent(
 					Class<? extends Annotation> annotationType) {
-				
+
 				if (Named.class.equals(annotationType)) {
 					Package pkg = at.getJavaClass().getPackage();
-					return pkg.isAnnotationPresent(Named.class) || at.isAnnotationPresent(annotationType);
-				}
-				else {
+					return pkg.isAnnotationPresent(Named.class)
+							|| at.isAnnotationPresent(annotationType);
+				} else {
 					return at.isAnnotationPresent(annotationType);
 				}
 			}
@@ -132,9 +130,9 @@ public class NamedPackageExtension implements Extension {
 			@Override
 			public Set<AnnotatedField<? super X>> getFields() {
 				return at.getFields();
-			}        
-        };
-        
-        pat.setAnnotatedType(wrapped);
+			}
+		};
+
+		pat.setAnnotatedType(wrapped);
 	}
 }
